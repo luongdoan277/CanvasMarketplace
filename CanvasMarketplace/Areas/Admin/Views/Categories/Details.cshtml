@@ -1,0 +1,29 @@
+﻿@model CategoryDTO
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Detail category</h6>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Category Name:</label>
+                    <p>@Model.Name</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Created Date:</label>
+                    <p>@Model.Created</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

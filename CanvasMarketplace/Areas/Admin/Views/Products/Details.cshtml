@@ -1,0 +1,57 @@
+﻿@model ProductDTO
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .thumbnail-image {
+        width: 150px;
+    }
+
+    .main-image {
+        width: 250px;
+    }
+</style>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Detail category </h6>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-2">
+                <label asp-for="Name"></label>
+            </dt>
+            <dd class="col-sm-10">
+                <label asp-for="Name"></label>
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="Description"></label>
+            </dt>
+            <dd class="col-sm-10">
+                <div asp-for="Description" class="form-control" readonly></div>
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="Price"></label>
+            </dt>
+            <dd class="col-sm-10">
+                <label asp-for="Price"></label>
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="ImageThumbnailUrl"></label>
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Model.ImageThumbnailUrl" alt="Thumbnail" class="thumbnail-image" />
+            </dd>
+            <dt class="col-sm-2">
+                <label asp-for="ImageUrl"></label>
+            </dt>
+            <dd class="col-sm-10">
+                <img src="@Model.ImageUrl" alt="Image" class="main-image" />
+            </dd>
+        </dl>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Add Section Begin -->
+<section class="page-add">
+    <!-- ... (giữ nguyên phần này) ... -->
+</section>
+<!-- Page Add Section End -->
+<!-- Order Confirmation Page Begin -->
+<section class="order-confirmation-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="order-conf-details">
+                    <h2>Your Order has been Placed Successfully</h2>
+                    <p>Thank you for shopping with us. Your order has been received and is currently being processed. You can view the details of your order below:</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mt-5 ">
+                <div class="order-details">
+                    <h3>Order Details</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-summary">
+                            <!-- Đây là nơi chúng ta sẽ thêm thông tin đơn hàng từ localStorage bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Order Confirmation Page End -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const orderSummary = document.getElementById("order-summary");
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+        cartItems.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                        <td>${item.Name}</td>
+                        <td>$${item.Price.toFixed(2)}</td>
+                        <td>${item.Quantity}</td>
+                        <td>$${(item.Price * item.Quantity * 1.15).toFixed(2)}</td>
+                    `;
+            orderSummary.appendChild(row);
+        });
+
+        // Xóa thông tin đơn hàng khỏi localStorage sau khi hiển thị
+        localStorage.removeItem("cartItems");
+    });
+</script>

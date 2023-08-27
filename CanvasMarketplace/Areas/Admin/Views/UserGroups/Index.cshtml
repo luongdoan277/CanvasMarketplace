@@ -1,0 +1,55 @@
+﻿@model IEnumerable<UserGroupsDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">User Group</h6>
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            <span>UserName</span>
+                        </th>
+                        <th>
+                            <span>Email</span>
+                        </th>
+                        <th>
+                            <span>Role</span>
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.UserName</span>
+                            </td>
+                            <td>
+                                <span>@item.Email</span>
+                            </td>
+                            <td>
+                                <span>@item.Role</span>
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

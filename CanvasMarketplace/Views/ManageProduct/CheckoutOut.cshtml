@@ -1,0 +1,211 @@
+﻿@model CheckoutOutDTO
+@{
+    ViewData["Title"] = "CheckoutOut";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Add Section Begin -->
+<section class="page-add">
+    <!-- ... (giữ nguyên phần này) ... -->
+</section>
+<!-- Page Add Section End -->
+<!-- Cart Total Page Begin -->
+<section class="cart-total-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="order-table" id="order-summary">
+                    <h3>Order Summary</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Shipping</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Đây là nơi chúng ta sẽ thêm thông tin đơn hàng từ localStorage bằng JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <form asp-action="CheckoutOut" asp-controller="ManageProduct" method="post" class="checkout-form">
+            <div class="row">
+                <div class="col-lg-9">
+                    <h3>Your Information</h3>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Full Name*</p>
+                        </div>
+                        <div class="col-lg-10">
+                            <input type="text" asp-for="User.FullName" placeholder="Full Name" id="full-name">
+                            <span class="error-message" id="full-name-error"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Phone*</p>
+                        </div>
+                        <div class="col-lg-10">
+                            <input type="text" asp-for="User.PhoneNumber" placeholder="Phone Number" id="phone-number">
+                            <span class="error-message" id="phone-number-error"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Email*</p>
+                        </div>
+                        <div class="col-lg-10">
+                            <input type="text" asp-for="User.Email" placeholder="Email" id="email">
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <p class="in-name">Street Address*</p>
+                        </div>
+                        <div class="col-lg-10">
+                            <input type="text" asp-for="User.Street" placeholder="Street Address 1" id="street-address-1">
+                            <span class="error-message" id="street-address-1-error"></span>
+                        </div>
+                    </div>
+                    <!-- ... (giữ nguyên các phần khác) ... -->
+                    <div class="col-lg-12">
+                        <h3>Payment Method</h3>
+                        <p>Cash on Delivery</p>
+                    </div>
+                    <div class="col-lg-12 text-right">
+                        <input type="button" class="btn btn-dark btn-lg" value="Place Your Order" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Cart Total Page End -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+        const checkoutForm = document.querySelector(".checkout-form");
+        const firstNameInput = document.getElementById("full-name");
+        const phoneNumberInput = document.getElementById("phone-number");
+        const emailInput = document.getElementById("email");
+        const streetAddress1Input = document.getElementById("street-address-1");
+        const submitButton = document.querySelector(".checkout-form input[type='button']");
+        const orderSummaryTable = document.querySelector("#order-summary tbody");
+        const protocol = window.location.protocol;
+        const hostname = window.location.hostname;
+        const port = window.location.port;
+        const baseUrl = `${protocol}//${hostname}:${port}`;
+
+        cartItems.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${item.Name}</td>
+                <td>$${item.Price.toFixed(2)}</td>
+                <td>${item.Quantity}</td>
+                <td>$${(item.Price * 0.15).toFixed(2)}</td>
+                <td>$${(item.Price * item.Quantity * 1.15).toFixed(2)}</td>
+            `;
+            orderSummaryTable.appendChild(row);
+        });
+        submitButton.addEventListener("click", async function (event) {
+            event.preventDefault();
+            if (validateForm()) {
+                const user = {
+                    FullName: firstNameInput.value,
+                    PhoneNumber: phoneNumberInput.value,
+                    Email: emailInput.value,
+                    Street: streetAddress1Input.value
+                    // Thêm các trường khác tại đây...
+                };
+
+                const orderItems = cartItems.map(item => {
+                    return {
+                        ProId: item.Id,
+                        Price: item.Price,
+                        Quantity: item.Quantity,
+                        Total: item.Price * item.Quantity
+                    };
+                });
+
+                const order = {
+                    User: user,
+                    OrderItems: orderItems
+                };
+
+                try {
+                    // Tạo URL gốc
+                    const url = `${baseUrl}/ManageProduct/CheckoutOut`;
+
+                    // Sử dụng jQuery để gửi dữ liệu lên server
+                    $.post(url, order, function (result) {
+
+                        // Xử lý kết quả từ server
+                        if (result.success) {
+                            // Chuyển hướng người dùng tới trang xác nhận đơn hàng
+                            window.location.href = `${baseUrl}/ManageProduct/OrderConfirmation`;
+                        } else {
+                            // Hiển thị thông báo lỗi nếu xử lý thất bại
+                            alert("Processing failed. Please try again later.");
+                        }
+                    });
+                   
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                }
+            }
+        });
+
+        function validateForm() {
+            let isValid = true;
+            const errorMessages = [];
+
+            if (firstNameInput.value.trim() === "") {
+                errorMessages.push("Full Name is required.");
+                isValid = false;
+                document.getElementById("full-name-error").textContent = "Full Name is required.";
+            } else {
+                document.getElementById("full-name-error").textContent = "";
+            }
+
+            if (phoneNumberInput.value.trim() === "") {
+                errorMessages.push("Phone Number is required.");
+                isValid = false;
+                document.getElementById("phone-number-error").textContent = "Phone Number is required.";
+            } else {
+                document.getElementById("phone-number-error").textContent = "";
+            }
+
+            if (emailInput.value.trim() === "") {
+                errorMessages.push("Email is required.");
+                isValid = false;
+                document.getElementById("email-error").textContent = "Email is required.";
+            } else {
+                document.getElementById("email-error").textContent = "";
+            }
+
+            if (streetAddress1Input.value.trim() === "") {
+                errorMessages.push("Street Address is required.");
+                isValid = false;
+                document.getElementById("street-address-1-error").textContent = "Street Address is required.";
+            } else {
+                document.getElementById("street-address-1-error").textContent = "";
+            }
+
+            // Hiển thị thông báo lỗi nếu có
+            if (!isValid) {
+                const errorMessage = errorMessages.join("\n");
+                alert(errorMessage);
+            }
+
+            return isValid;
+        }
+        
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@model ICollection<ProductDTO>
+@{
+    ViewData["Title"] = "Dresses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Categories Page Section Begin -->
+<section class="categories-page spad">
+    <div class="container">
+        <div class="categories-controls">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="categories-filter d-flex justify-content-between">
+                        <div class="cf-left">
+                            <form action="#">
+                                <div class="input-group">
+                                    <label class="input-group-text" for="sort-select">Sort by</label>
+                                    <select class="form-select" id="sort-select">
+                                        <option value="">Orders</option>
+                                        <option value="">Newest</option>
+                                        <option value="">Price</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="cf-right">
+                            <span>@Model.Count() Products</span>
+                            <a href="#">2</a>
+                            <a href="#" class="active">4</a>
+                            <a href="#">6</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <a asp-controller="Shop" asp-action="ProductDetail" asp-route-id="@item.Id">
+                        <div class="single-product-item">
+                            <figure>
+                                <img src="@item.ImageThumbnailUrl" alt="" class="resize-image">
+                            </figure>
+                            <div class="product-text">
+                                <a href="#">
+                                    <h6>@item.Name</h6>
+                                </a>
+                                <p>$@item.Price</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="more-product">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <a href="#" class="primary-btn">Load More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Page Section End -->
+
+<script>
+    // Function to resize images based on screen width
+    function resizeImages() {
+        const images = document.querySelectorAll(".resize-image");
+        images.forEach(image => {
+            const screenWidth = window.innerWidth;
+            const desiredWidth = screenWidth >= 992 ? 250 : (screenWidth / 992) * 250;
+            const desiredHeight = (desiredWidth / 250) * 350;
+            image.style.width = desiredWidth + "px";
+            image.style.height = desiredHeight + "px";
+        });
+    }
+
+    // Call the function when the page loads and when the window is resized
+    window.addEventListener("load", resizeImages);
+    window.addEventListener("resize", resizeImages);
+</script>

@@ -1,0 +1,205 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = CanvasMarketplace
+build_property.RootNamespace = CanvasMarketplace
+build_property.ProjectDir = D:\wordspaces\FreeLancer\CanvasMarketplace\CanvasMarketplace\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\wordspaces\FreeLancer\CanvasMarketplace\CanvasMarketplace
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Categories/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcmllc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Categories/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcmllc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Categories/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcmllc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Categories/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcmllc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Categories/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcmllc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Orders/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Orders/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Orders/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Orders/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Orders/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Products/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Products/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Products/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Products/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Products/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/UserGroups/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlckdyb3Vwc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/UserGroups/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlckdyb3Vwc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/UserGroups/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlckdyb3Vwc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/UserGroups/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlckdyb3Vwc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Account/History.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxIaXN0b3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/ManageProduct/Cart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlUHJvZHVjdFxDYXJ0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/ManageProduct/CheckoutOut.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlUHJvZHVjdFxDaGVja291dE91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/ManageProduct/OrderConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlUHJvZHVjdFxPcmRlckNvbmZpcm1hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Shop/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Shop/ProductDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcFxQcm9kdWN0RGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Shared/_AccountLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BY2NvdW50TGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = b-p5ww98my39
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Areas/Admin/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-78c1focvyb
+
+[D:/wordspaces/FreeLancer/CanvasMarketplace/CanvasMarketplace/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-qprjlyxbm0

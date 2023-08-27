@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+
+    <link rel="stylesheet" href="~/clients/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/clients/css/style.css" type="text/css">
+</head>
+
+<body>
+    <!-- Header Section Begin -->
+    <header class="header-section">
+        <div class="container-fluid">
+            <div class="inner-header">
+                <div class="logo">
+                    <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                </div>
+                <div class="header-right">
+                    <a asp-controller="ManageProduct" asp-action="Cart">
+                        <img src="~/clients/img/icons/bag.png" alt="">
+                        <span id="cart-item-count">0</span>
+                    </a>
+                </div>
+                <div class="user-access">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            <a asp-controller="Account" asp-action="Logout">Logout</a> |
+                            <span>@User.Identity.Name</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Register">Register</a>
+                        <a asp-controller="Account" asp-action="Login" class="in">Sign in</a>
+                    }
+                </div>
+                <nav class="main-menu mobile-menu">
+                    <ul>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a asp-controller="Account" asp-action="History">History</a>
+                            </li>
+                            
+                        }
+                        <li>
+                            <a asp-controller="Shop" asp-action="Index">Shop</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header Section End -->
+    <!-- Header Info Begin -->
+    <div class="header-info mb-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="header-item">
+                        <img src="~/clients/img/icons/delivery.png" alt="">
+                        <p>Free shipping on orders over $30 in USA</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-lg-center">
+                    <div class="header-item">
+                        <img src="~/clients/img/icons/voucher.png" alt="">
+                        <p>20% Student Discount</p>
+                    </div>
+                </div>
+                <div class="col-md-4 text-left text-xl-right">
+                    <div class="header-item">
+                        <img src="img/icons/sales.png" alt="">
+                        <p>30% off on dresses. Use code: 30OFF</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header Info End -->
+    <!-- Banner Section Begin -->
+    <section class="banner-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="single-banner">
+                        <img src="~/clients/img/slider-1.jpg" alt="">
+                        <div class="inner-text">
+                            <h4>Summer 2023</h4>
+                            <p>New Arrivals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="single-banner">
+                        <img src="~/clients/img/slider-2.jpg" alt="">
+                        <div class="inner-text">
+                            <h4>Yoga Collection</h4>
+                            <p>Special Offer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Banner Section End -->
+    <!-- Toast Notification -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toast" class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-white">Success</strong>
+            </div>
+            <div class="toast-body text-white">
+                Product added to cart!
+            </div>
+        </div>
+    </div>
+    <!-- End of Toast Notification -->
+    <!-- Render Body Content -->
+    @RenderBody()
+
+    <!-- Footer Section Begin -->
+    <footer class="footer-section spad">
+        <div class="container">
+            <div class="footer-widget">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>About us</h4>
+                            <ul>
+                                <li>About Us</li>
+                                <li>Contact Us</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Customer Care</h4>
+                            <ul>
+                                <li>Privacy Policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Our Services</h4>
+                            <ul>
+                                <li>Free Shipping</li>
+                                <li>Terms and conditions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h4>Information</h4>
+                            <ul>
+                                <li>Payment methods</li>
+                                <li>Shipping methods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+    <!-- Scripts -->
+    <script src="~/clients/js/jquery-3.3.1.min.js"></script>
+    <script src="~/clients/js/bootstrap.min.js"></script>
+    <script src="~/clients/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/clients/js/jquery.slicknav.js"></script>
+    <script src="~/clients/js/owl.carousel.min.js"></script>
+    <script src="~/clients/js/jquery.nice-select.min.js"></script>
+    <script src="~/clients/js/mixitup.min.js"></script>
+    <script src="~/clients/js/main.js"></script>
+    <script>
+        // Cart Item Count
+        $(document).ready(function () {
+            updateCartItemCount();
+
+            function getCartItems() {
+                return JSON.parse(localStorage.getItem('cartItems')) || [];
+            }
+
+            function updateCartItemCount() {
+                let cartItems = getCartItems();
+                let totalCount = cartItems.length;
+                $("#cart-item-count").text(totalCount);
+            }
+        });
+    </script>
+</body>
+
+</html>
