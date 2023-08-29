@@ -148,6 +148,10 @@ namespace CanvasMarketplace.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
 
@@ -346,7 +350,7 @@ namespace CanvasMarketplace.Migrations
                     b.HasOne("CanvasMarketplace.Data.Entities.AppUser", "AppUser")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -357,7 +361,7 @@ namespace CanvasMarketplace.Migrations
                     b.HasOne("CanvasMarketplace.Data.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("CanvasMarketplace.Data.Entities.Product", "Product")
@@ -382,7 +386,7 @@ namespace CanvasMarketplace.Migrations
                     b.HasOne("CanvasMarketplace.Data.Entities.AppUser", "AppUser")
                         .WithMany("Product")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("AppUser");

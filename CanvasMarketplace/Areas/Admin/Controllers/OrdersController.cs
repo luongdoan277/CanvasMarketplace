@@ -1,5 +1,7 @@
-﻿using CanvasMarketplace.Data.EF;
+﻿using CanvasMarketplace.Areas.Admin.DTO;
+using CanvasMarketplace.Data.EF;
 using CanvasMarketplace.Data.Entities;
+using CanvasMarketplace.Data.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,34 +23,89 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         // Action to display a list of orders
         public async Task<IActionResult> Index()
         {
-            var orders = await _context.Orders.Include(o => o.AppUser).ToListAsync();
-            return View(orders);
+            try
+            {
+                var orders = await _context.Orders.Include(o => o.AppUser).Select(o => new OrderDTO()
+                {
+                    Id = o.Id,
+                    Email = o.AppUser.Email,
+                    Created = o.CreatedDate,
+                    Status = o.Status,
+                    Street = o.Street,
+                    TotalAmount = o.TotalAmount
+                })
+                .ToListAsync();
+
+                return View(orders);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to display order details
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int Id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                var order = _context.Orders
+                .Include(o => o.AppUser)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                        .ThenInclude(p => p.Category)
+                .FirstOrDefault(o => o.Id == Id);
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                var orderDetailDTO = new OrderDetailDTO
+                {
+                    Id = order.Id,
+                    TotalAmount = order.TotalAmount,
+                    Status = order.Status,
+                    AppUser = new AppUserDTO
+                    {
+                        FirstName = order.AppUser.FirstName,
+                        Email = order.AppUser.Email,
+                        PhoneNumber = order.AppUser.PhoneNumber
+                    },
+                    OrderItems = order.OrderItems.Select(oi => new OrderItemInOrderDTO
+                    {
+                        Id = oi.Id,
+                        Price = oi.Product.Price,
+                        ProductImageThumbnailUrl = "/images/" + oi.Product.ImageThumbnailUrl,
+                        ProductName = oi.Product.Name,
+                        ProductCategory = new ProductCategoryDTO
+                        {
+                            Name = oi.Product.Category.Name
+                        }
+                    }).ToList()
+                };
+
+                return View(orderDetailDTO);
             }
-
-            var order = await _context.Orders.Include(o => o.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (order == null)
+            catch(Exception ex)
             {
-                return NotFound();
+                throw new Exception(ex.Message);
             }
-
-            return View(order);
         }
+
 
         // Action to display the order creation form
         public IActionResult Create()
         {
-            ViewData["UerId"] = new SelectList(_context.AppUsers, "Id", "Id");
-            return View();
+            try
+            {
+                ViewData["UerId"] = new SelectList(_context.AppUsers, "Id", "Id");
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to handle order creation
@@ -56,88 +113,128 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UerId,TotalAmount,Status,Id,CreatedDate")] Order order)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                if (ModelState.IsValid)
+                {
+                    _context.Add(order);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
 
-            ViewData["UserId"] = new SelectList(_context.AppUsers, "Id", "Id", order.UserId);
-            return View(order);
+                ViewData["UserId"] = new SelectList(_context.AppUsers, "Id", "Id", order.UserId);
+                return View(order);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to display the order editing form
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                var order = _context.Orders
+                .Include(o => o.AppUser)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                        .ThenInclude(p => p.Category)
+                .FirstOrDefault(o => o.Id == id);
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                var orderDetailDTO = new OrderDetailDTO
+                {
+                    Id = order.Id,
+                    TotalAmount = order.TotalAmount,
+                    Status = order.Status,
+                    Street = order.Street,
+                    AppUser = new AppUserDTO
+                    {
+                        FirstName = order.AppUser.FirstName,
+                        Email = order.AppUser.Email,
+                        PhoneNumber = order.AppUser.PhoneNumber
+                    },
+                    OrderItems = order.OrderItems.Select(oi => new OrderItemInOrderDTO
+                    {
+                        Id = oi.Id,
+                        Price = oi.Product.Price,
+                        ProductImageThumbnailUrl = "/images/" + oi.Product.ImageThumbnailUrl,
+                        ProductName = oi.Product.Name,
+                        ProductCategory = new ProductCategoryDTO
+                        {
+                            Name = oi.Product.Category.Name
+                        }
+                    }).ToList()
+                };
+
+                return View(orderDetailDTO);
             }
-
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                throw new Exception(ex.Message);
             }
-
-            ViewData["UerId"] = new SelectList(_context.AppUsers, "Id", "Id", order.UserId);
-            return View(order);
         }
 
         // Action to handle order editing
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UerId,TotalAmount,Status,Id,CreatedDate")] Order order)
+        public async Task<IActionResult> Edit(int orderId, StatusOrder newStatus)
         {
-            if (id != order.Id)
+            try
             {
-                return NotFound();
-            }
+                var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
 
-            if (ModelState.IsValid)
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                order.Status = newStatus;
+
+                _context.Update(order);
+
+                _context.SaveChanges();
+
+                // Redirect to the order detail page or order list page
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
             {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                throw new Exception(ex.Message);
             }
-
-            ViewData["UerId"] = new SelectList(_context.AppUsers, "Id", "Id", order.UserId);
-            return View(order);
         }
 
         // Action to display the order deletion confirmation page
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var order = await _context.Orders.Include(o => o.AppUser)
+                    .FirstOrDefaultAsync(m => m.Id == id);
+
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                return View(order);
             }
-
-            var order = await _context.Orders.Include(o => o.AppUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (order == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                throw new Exception(ex.Message);
             }
-
-            return View(order);
         }
 
         // Action to handle order deletion
@@ -145,16 +242,23 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order != null)
+            try
             {
-                _context.Orders.Remove(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+                var order = await _context.Orders.FindAsync(id);
 
-            return NotFound();
+                if (order != null)
+                {
+                    _context.Orders.Remove(order);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Helper method to check if an order exists

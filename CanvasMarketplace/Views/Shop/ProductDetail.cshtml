@@ -1,82 +1,85 @@
-﻿@{
+﻿@model ProductDTO
+@{
     ViewData["Title"] = "ProuctDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- Page Add Section Begin -->
-<section class="page-add">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="page-breadcrumb">
-                    <h2>Shirts<span>.</span></h2>
-                    <a href="#">Home</a>
-                    <a href="#">Dresses</a>
-                    <a class="active" href="#">Night Dresses</a>
-                </div>
-            </div>
-            <div class="col-lg-8">
-                <img src="~/clients/img/add.jpg" alt="">
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Page Add Section End -->
-<!-- Product Page Section Beign -->
-<section class="product-page">
-    <div class="container">
-        <div class="product-control d-flex justify-content-between">
-            <a href="#">Previous</a>
-            <a href="#">Next</a>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="product-slider owl-carousel">
-                    <div class="product-img">
-                        <figure>
-                            <img src="@Model.ImageUrl" alt="" class="resize-image">
-                            <div class="p-status">new</div>
-                        </figure>
-                    </div>
-                    <div class="product-img">
-                        <figure>
-                            <img src="@Model.ImageThumbnailUrl" alt="" class="resize-image">
-                            <div class="p-status">new</div>
-                        </figure>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="product-content">
-                    <h2>@Model.Name</h2>
-                    <div class="pc-meta">
-                        <h5>$@Model.Price</h5>
-                    </div>
-                    <p>
-                        @Html.Raw(Model.Description)
-                    </p>
-                    <div class="product-quantity">
-                        <div class="pro-qty">
-                            <input type="text" value="1" id="pro-qty-number">
+<!-- Shop Detail Start -->
+<div class="container-fluid py-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-5 pb-5">
+            <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner border">
+                    <div class="carousel-item active">
+                        <div class="image-container">
+                            <img src="@Model.ImageUrl" alt="Image">
                         </div>
                     </div>
-                    <a class="primary-btn pc-btn" id="add-to-cart">Add to cart</a>
+                    <div class="carousel-item">
+                        <div class="image-container">
+                            <img src="@Model.ImageThumbnailUrl" alt="Image">
+                        </div>
+                    </div>
                 </div>
+                <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                </a>
+                <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-7 pb-5">
+            <h3 class="font-weight-semi-bold">@Model.Name</h3>
+            <h3 class="font-weight-semi-bold mb-4">$@Model.Price</h3>
+            <p class="mb-4">@Html.Raw(Model.Description)</p>
+            <div class="d-flex align-items-center mb-4 pt-2">
+                <div class="input-group quantity mr-3" style="width: 130px;">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary btn-minus">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                    </div>
+                    <input type="text" class="form-control bg-secondary text-center" value="1" id="pro-qty-number">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary btn-plus">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <button class="btn btn-primary px-3" id="add-to-cart"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
             </div>
         </div>
     </div>
-</section>
-<!-- Product Page Section End -->
-
-<section class="related-product spad">
-    <div class="container">
-    </div>
-</section>
-
+</div>
+<!-- Shop Detail End -->
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        updateCartItemCount();
+    function resizeCarouselImages() {
+        const carouselImages = document.querySelectorAll(".carousel-item img");
+        const screenWidth = window.innerWidth;
 
+        carouselImages.forEach(image => {
+            let desiredWidth = 400;  // Kích thước mong muốn cho hình ảnh
+            let desiredHeight = 500; // Kích thước mong muốn cho hình ảnh
+
+            if (screenWidth < 768) {
+                // Thay đổi kích thước cho kích thước màn hình nhỏ hơn 768px
+                desiredWidth = 200;
+                desiredHeight = 300;
+            } else if (screenWidth < 1024) {
+                // Thay đổi kích thước cho kích thước màn hình từ 768px đến 1024px
+                desiredWidth = 300;
+                desiredHeight = 400;
+            }
+
+            image.style.width = desiredWidth + "px";
+            image.style.height = desiredHeight + "px";
+        });
+    }
+    window.addEventListener("resize", resizeCarouselImages);
+    document.addEventListener("DOMContentLoaded", function () {
+        resizeCarouselImages();
         document.getElementById("add-to-cart").addEventListener("click", function () {
             let checkAuth = "@ViewBag.Auth";
             if (checkAuth == "True") {
@@ -99,7 +102,8 @@
                             Id: @Model.Id,
                             Name: "@Model.Name",
                             Price: @Model.Price,
-                            Quantity: proQty
+                            Quantity: proQty,
+                            ImageUrl: "@Model.ImageThumbnailUrl"
                         };
                         cartItems.push(obj);
                     }
@@ -144,5 +148,8 @@
             });
             toast.show();
         }
+       
+
+       
     });
 </script>

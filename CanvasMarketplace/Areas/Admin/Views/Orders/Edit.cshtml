@@ -1,47 +1,76 @@
-﻿@model CanvasMarketplace.Data.Entities.Order
+﻿@model OrderDetailDTO
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Update Order Status";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Update Category</h6>
-        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Update Order Status</h6>
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Edit">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col-lg-6">
+                <h6 class="m-0 font-weight-bold text-primary">Order Information</h6>
+                <div class="form-group">
+                    <label class="font-weight-bold">Total Amount:</label>
+                    <p>@Model.TotalAmount</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Status:</label>
+                    <p>@Model.Status</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Customer Name:</label>
+                    <p>@Model.AppUser.FirstName</p>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">Email:</label>
+                    <p>@Model.AppUser.Email</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h6 class="m-0 font-weight-bold text-primary">Update Status</h6>
+                <form method="post" asp-action="Edit">
+                    <input type="hidden" name="orderId" value="@Model.Id" />
                     <div class="form-group">
-                        <label asp-for="UserId" class="control-label"></label>
-                        <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                        <span asp-validation-for="UserId" class="text-danger"></span>
+                        <label for="newStatus">New Status:</label>
+                        <select class="form-control" id="newStatus" name="newStatus">
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Shipped">Shipped</option>
+                        </select>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="TotalAmount" class="control-label"></label>
-                        <input asp-for="TotalAmount" class="form-control" />
-                        <span asp-validation-for="TotalAmount" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <select asp-for="Status" class="form-control"></select>
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
-                    <input type="hidden" asp-for="Id" />
-                    <div class="form-group">
-                        <label asp-for="CreatedDate" class="control-label"></label>
-                        <input asp-for="CreatedDate" class="form-control" />
-                        <span asp-validation-for="CreatedDate" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
                 </form>
             </div>
         </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>ProductImageThumbnailUrl</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Price</td>
+                            <td>@item.ProductCategory.Name</td>
+                            <td>
+                                <img src="@item.ProductImageThumbnailUrl" alt="Product Thumbnail" class="product-thumbnail">
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-

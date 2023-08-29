@@ -30,156 +30,195 @@ namespace CanvasMarketplace.Controllers
             this.logger = _logger;
             this.context = context;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            LoginDTO model = new DTO.LoginDTO();
-            return View(model);
+            try
+            {
+                LoginDTO model = new DTO.LoginDTO();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-
-                if (user != null && !user.EmailConfirmed)
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("message", "Email not confirmed yet");
+                    var user = await userManager.FindByEmailAsync(model.Email);
 
-                    return View(model);
+                    if (user != null && !user.EmailConfirmed)
+                    {
+                        ModelState.AddModelError("message", "Email not confirmed yet");
+
+                        return View(model);
+                    }
+
+                    bool checkPass = await userManager.CheckPasswordAsync(user, model.Password);
+
+
+                    if (!checkPass)
+                    {
+                        ModelState.AddModelError("message", "Invalid credentials");
+
+                        return View(model);
+
+                    }
+
+                    var result = await signInManager.PasswordSignInAsync(
+                            model.Email,
+                            model.Password,
+                            model.RememberMe,
+                            true);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Shop");
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return View("AccountLocked");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("message", "Invalid login attempt");
+                        return View(model);
+                    }
                 }
-
-                bool checkPass = await userManager.CheckPasswordAsync(user, model.Password);
-
-
-                if (!checkPass)
-                {
-                    ModelState.AddModelError("message", "Invalid credentials");
-
-                    return View(model);
-
-                }
-
-                var result = await signInManager.PasswordSignInAsync(
-                        model.Email,
-                        model.Password,
-                        model.RememberMe,
-                        true);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Shop");
-                }
-                else if (result.IsLockedOut)
-                {
-                    return View("AccountLocked");
-                }
-                else
-                {
-                    ModelState.AddModelError("message", "Invalid login attempt");
-                    return View(model);
-                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            CreateUserDTO model = new CreateUserDTO();
-            return View(model);
+            try
+            {
+                CreateUserDTO model = new CreateUserDTO();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+           
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(CreateUserDTO request)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var userCheck = await userManager.FindByEmailAsync(request.Email);
-
-                if (userCheck == null)
+                if (ModelState.IsValid)
                 {
-                    var user = new AppUser
+                    var userCheck = await userManager.FindByEmailAsync(request.Email);
+
+                    if (userCheck == null)
                     {
-                        FirstName = request.Name,
-                        UserName = request.Email,
-                        NormalizedUserName = request.Email,
-                        Email = request.Email,
-                        PhoneNumber = request.PhoneNumber,
-                        EmailConfirmed = true,
-                        PhoneNumberConfirmed = true,
-                    };
-
-                    var result = await userManager.CreateAsync(user, request.Password);
-
-                    if (result.Succeeded)
-                    {
-                        var role = new AppRole();
-
-                        if (!await roleManager.RoleExistsAsync(UserRoles.Client))
+                        var user = new AppUser
                         {
-                            role.Name = UserRoles.Client;
-                            await roleManager.CreateAsync(role);
-                        }
-                        await userManager.AddToRoleAsync(user, UserRoles.Client);
+                            FirstName = request.Name,
+                            UserName = request.Email,
+                            NormalizedUserName = request.Email,
+                            Email = request.Email,
+                            PhoneNumber = request.PhoneNumber,
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true,
+                        };
 
-                        return RedirectToAction("Login");
+                        var result = await userManager.CreateAsync(user, request.Password);
+
+                        if (result.Succeeded)
+                        {
+                            var role = new AppRole();
+
+                            if (!await roleManager.RoleExistsAsync(UserRoles.Client))
+                            {
+                                role.Name = UserRoles.Client;
+                                await roleManager.CreateAsync(role);
+                            }
+                            await userManager.AddToRoleAsync(user, UserRoles.Client);
+
+                            return RedirectToAction("Login");
+                        }
+                        else
+                        {
+                            if (result.Errors.Count() > 0)
+                            {
+                                foreach (var error in result.Errors)
+                                {
+                                    ModelState.AddModelError("message", error.Description);
+                                }
+                            }
+                            return View(request);
+                        }
                     }
                     else
                     {
-                        if (result.Errors.Count() > 0)
-                        {
-                            foreach (var error in result.Errors)
-                            {
-                                ModelState.AddModelError("message", error.Description);
-                            }
-                        }
+                        ModelState.AddModelError("message", "Email already exists.");
                         return View(request);
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError("message", "Email already exists.");
-                    return View(request);
-                }
+                return View(request);
             }
-            return View(request);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await signInManager.SignOutAsync(); // Đăng xuất người dùng
-            return RedirectToAction("Index", "Shop"); // Chuyển hướng về trang chủ hoặc trang khác
+            try
+            {
+                await signInManager.SignOutAsync(); // Đăng xuất người dùng
+                return RedirectToAction("Index", "Shop"); // Chuyển hướng về trang chủ hoặc trang khác
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IActionResult> History()
         {
+            try
+            {
+                var result = await (from od in context.Orders
+                                    join oi in context.OrderItems on od.Id equals oi.OrderId
+                                    join p in context.Products on oi.ProductId equals p.Id
+                                    where od.UserId.ToString() == userManager.GetUserId(User)
+                                    select new { od, oi, p })
+                       .Select(el => new HistoryDTO()
+                       {
+                           Product = el.p.Name,
+                           Price = el.p.Price,
+                           Quantity = el.oi.Quantity,
+                           IsActive = el.od.Status,
+                           TotalPrice = el.od.TotalAmount
+                       })
+                       .ToListAsync();
 
-            var result = await (from od in context.Orders
-                        join oi in context.OrderItems on od.Id equals oi.OrderId
-                        join p in context.Products on oi.ProductId equals p.Id
-                        where od.UserId.ToString() == userManager.GetUserId(User)
-                         select new { od, oi, p })
-                        .Select(el => new HistoryDTO()
-                        {
-                            Product = el.p.Name,
-                            Price = el.p.Price,
-                            Quantity = el.oi.Quantity,
-                            IsActive = el.od.Status,
-                            TotalPrice = el.od.TotalAmount
-                        })
-                        .ToListAsync();
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
-            return View(result);
         }
 
     }

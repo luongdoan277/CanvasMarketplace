@@ -11552,11 +11552,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\wordspaces\\FreeLancer\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
+      "projectUniqueName": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
       "projectName": "CanvasMarketplace",
-      "projectPath": "D:\\wordspaces\\FreeLancer\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
+      "projectPath": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
       "packagesPath": "C:\\Users\\AD\\.nuget\\packages\\",
-      "outputPath": "D:\\wordspaces\\FreeLancer\\CanvasMarketplace\\CanvasMarketplace\\obj\\",
+      "outputPath": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\AD\\AppData\\Roaming\\NuGet\\NuGet.Config",

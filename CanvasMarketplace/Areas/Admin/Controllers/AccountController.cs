@@ -34,10 +34,17 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
 
         // Action to display the registration form
         [HttpGet]
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
-            CreateUserDTO model = new CreateUserDTO();
-            return View(model);
+            try
+            {
+                CreateUserDTO model = new CreateUserDTO();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to handle user registration
@@ -45,62 +52,76 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(CreateUserDTO request)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var userCheck = await userManager.FindByEmailAsync(request.Email);
-
-                if (userCheck == null)
+                if (ModelState.IsValid)
                 {
-                    var user = new AppUser
+                    var userCheck = await userManager.FindByEmailAsync(request.Email);
+
+                    if (userCheck == null)
                     {
-                        FirstName = request.Name,
-                        UserName = request.Email,
-                        NormalizedUserName = request.Email,
-                        Email = request.Email,
-                        PhoneNumber = request.PhoneNumber,
-                        EmailConfirmed = true,
-                        PhoneNumberConfirmed = true,
-                    };
-
-                    var result = await userManager.CreateAsync(user, request.Password);
-
-                    if (result.Succeeded)
-                    {
-                        // Create and assign roles based on user's choice
-                        var role = new AppRole();
-                        if (request.Role == UserRoles.User)
+                        var user = new AppUser
                         {
-                            await CreateAndAssignRoleIfNotExists(UserRoles.User, user);
-                        }
+                            FirstName = request.Name,
+                            UserName = request.Email,
+                            NormalizedUserName = request.Email,
+                            Email = request.Email,
+                            PhoneNumber = request.PhoneNumber,
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true,
+                        };
 
-                        else if (request.Role == UserRoles.Admin)
+                        var result = await userManager.CreateAsync(user, request.Password);
+
+                        if (result.Succeeded)
                         {
-                            await CreateAndAssignRoleIfNotExists(UserRoles.Admin, user);
-                        }
+                            // Create and assign roles based on user's choice
+                            var role = new AppRole();
+                            if (request.Role == UserRoles.User)
+                            {
+                                await CreateAndAssignRoleIfNotExists(UserRoles.User, user);
+                            }
 
-                        return RedirectToAction("Login");
+                            else if (request.Role == UserRoles.Admin)
+                            {
+                                await CreateAndAssignRoleIfNotExists(UserRoles.Admin, user);
+                            }
+
+                            return RedirectToAction("Login");
+                        }
+                        else
+                        {
+                            AddErrorsToModelState(result.Errors);
+                            return View(request);
+                        }
                     }
                     else
                     {
-                        AddErrorsToModelState(result.Errors);
+                        ModelState.AddModelError("message", "Email already exists.");
                         return View(request);
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError("message", "Email already exists.");
-                    return View(request);
-                }
+                return View(request);
             }
-            return View(request);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to display the login form
         [HttpGet]
         public IActionResult Login()
         {
-            LoginDTO model = new LoginDTO();
-            return View(model);
+            try
+            {
+                LoginDTO model = new LoginDTO();
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to handle user login
@@ -108,55 +129,62 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginDTO model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await userManager.FindByEmailAsync(model.Email);
-
-                if (user != null && !user.EmailConfirmed)
+                if (ModelState.IsValid)
                 {
-                    ModelState.AddModelError("message", "Email not confirmed yet");
-                    return View(model);
-                }
+                    var user = await userManager.FindByEmailAsync(model.Email);
 
-                bool checkPass = await userManager.CheckPasswordAsync(user, model.Password);
-
-                if (!checkPass)
-                {
-                    ModelState.AddModelError("message", "Invalid credentials");
-                    return View(model);
-                }
-
-                var result = await signInManager.PasswordSignInAsync(
-                    model.Email,
-                    model.Password,
-                    model.RememberMe,
-                    true);
-
-                if (result.Succeeded)
-                {
-                    var roles = await userManager.GetRolesAsync(user);
-
-                    // Redirect users based on their roles
-                    if (roles.FirstOrDefault() == UserRoles.Admin)
+                    if (user != null && !user.EmailConfirmed)
                     {
-                        return RedirectToAction("Index", "UserGroups");
+                        ModelState.AddModelError("message", "Email not confirmed yet");
+                        return View(model);
                     }
-                    else if (roles.FirstOrDefault() == UserRoles.User)
+
+                    bool checkPass = await userManager.CheckPasswordAsync(user, model.Password);
+
+                    if (!checkPass)
                     {
-                        return RedirectToAction("Index", "Orders");
+                        ModelState.AddModelError("message", "Invalid credentials");
+                        return View(model);
+                    }
+
+                    var result = await signInManager.PasswordSignInAsync(
+                        model.Email,
+                        model.Password,
+                        model.RememberMe,
+                        true);
+
+                    if (result.Succeeded)
+                    {
+                        var roles = await userManager.GetRolesAsync(user);
+
+                        // Redirect users based on their roles
+                        if (roles.FirstOrDefault() == UserRoles.Admin)
+                        {
+                            return RedirectToAction("Index", "UserGroups");
+                        }
+                        else if (roles.FirstOrDefault() == UserRoles.User)
+                        {
+                            return RedirectToAction("Index", "Orders");
+                        }
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return View("AccountLocked");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("message", "Invalid login attempt");
+                        return View(model);
                     }
                 }
-                else if (result.IsLockedOut)
-                {
-                    return View("AccountLocked");
-                }
-                else
-                {
-                    ModelState.AddModelError("message", "Invalid login attempt");
-                    return View(model);
-                }
+                return View(model);
             }
-            return View(model);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to handle user logout
@@ -177,20 +205,34 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         // Helper method to create and assign a role if it doesn't exist
         private async Task CreateAndAssignRoleIfNotExists(string roleName, AppUser user)
         {
-            if (!await roleManager.RoleExistsAsync(roleName))
+            try
             {
-                var role = new AppRole { Name = roleName };
-                await roleManager.CreateAsync(role);
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    var role = new AppRole { Name = roleName };
+                    await roleManager.CreateAsync(role);
+                }
+                await userManager.AddToRoleAsync(user, roleName);
             }
-            await userManager.AddToRoleAsync(user, roleName);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Helper method to add errors to ModelState
         private void AddErrorsToModelState(IEnumerable<IdentityError> errors)
         {
-            foreach (var error in errors)
+            try
             {
-                ModelState.AddModelError("message", error.Description);
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError("message", error.Description);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
     }

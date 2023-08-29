@@ -124,90 +124,104 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserDTO request)
         {
-            ViewBag.Roles = new List<string>() { UserRoles.User, UserRoles.Client };
-            if (ModelState.IsValid)
+            try
             {
-                // Check if a user with the given email already exists
-                var userCheck = await userManager.FindByEmailAsync(request.Email);
-
-                if (userCheck == null)
+                ViewBag.Roles = new List<string>() { UserRoles.User, UserRoles.Client };
+                if (ModelState.IsValid)
                 {
-                    // Create a new user instance based on the provided request data
-                    var user = new AppUser
+                    // Check if a user with the given email already exists
+                    var userCheck = await userManager.FindByEmailAsync(request.Email);
+
+                    if (userCheck == null)
                     {
-                        UserName = request.Email,
-                        NormalizedUserName = request.Email,
-                        Email = request.Email,
-                        PhoneNumber = request.PhoneNumber,
-                        FirstName = request.Name,
-                        EmailConfirmed = true,
-                        PhoneNumberConfirmed = true,
-                    };
-
-                    // Attempt to create the user in the identity system
-                    var result = await userManager.CreateAsync(user, request.Password);
-
-                    if (result.Succeeded)
-                    {
-                        // Create and assign the user role if it doesn't exist
-                        if (request.Role == UserRoles.User)
+                        // Create a new user instance based on the provided request data
+                        var user = new AppUser
                         {
-                            await CreateAndAssignRoleIfNotExists(UserRoles.User, user);
-                        }
-                        // Create and assign the client role if it doesn't exist
-                        else if (request.Role == UserRoles.Client)
-                        {
-                            await CreateAndAssignRoleIfNotExists(UserRoles.Client, user);
-                        }
+                            UserName = request.Email,
+                            NormalizedUserName = request.Email,
+                            Email = request.Email,
+                            PhoneNumber = request.PhoneNumber,
+                            FirstName = request.Name,
+                            EmailConfirmed = true,
+                            PhoneNumberConfirmed = true,
+                        };
 
-                        // Redirect to the Index action
-                        return RedirectToAction("Index");
+                        // Attempt to create the user in the identity system
+                        var result = await userManager.CreateAsync(user, request.Password);
+
+                        if (result.Succeeded)
+                        {
+                            // Create and assign the user role if it doesn't exist
+                            if (request.Role == UserRoles.User)
+                            {
+                                await CreateAndAssignRoleIfNotExists(UserRoles.User, user);
+                            }
+                            // Create and assign the client role if it doesn't exist
+                            else if (request.Role == UserRoles.Client)
+                            {
+                                await CreateAndAssignRoleIfNotExists(UserRoles.Client, user);
+                            }
+
+                            // Redirect to the Index action
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            // Add identity error messages to the ModelState for display in the view
+                            AddErrorsToModelState(result.Errors);
+                            return View(request);
+                        }
                     }
                     else
                     {
-                        // Add identity error messages to the ModelState for display in the view
-                        AddErrorsToModelState(result.Errors);
+                        // If a user with the provided email already exists, add a custom error message
+                        ModelState.AddModelError("message", "Email already exists.");
                         return View(request);
                     }
                 }
-                else
-                {
-                    // If a user with the provided email already exists, add a custom error message
-                    ModelState.AddModelError("message", "Email already exists.");
-                    return View(request);
-                }
-            }
 
-            // If the ModelState is invalid, return the view with the provided request data
-            return View(request);
+                // If the ModelState is invalid, return the view with the provided request data
+                return View(request);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
 
         // Action to display the user group deletion confirmation
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || context.AppUsers == null)
+            try
             {
-                return NotFound();
+                if (id == null || context.AppUsers == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await userManager.FindByIdAsync(id.ToString());
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                var roles = await userManager.GetRolesAsync(user);
+
+                var result = new UserDTO()
+                {
+                    Id = id,
+                    Role = roles.FirstOrDefault(),
+                    Name = user.FirstName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber
+                };
+
+                return View(result);
             }
-
-            var user = await userManager.FindByIdAsync(id.ToString());
-            if (user == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                throw new Exception(ex.Message);
             }
-            var roles = await userManager.GetRolesAsync(user);
-
-            var result = new UserDTO()
-            {
-                Id = id,
-                Role = roles.FirstOrDefault(),
-                Name = user.FirstName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber
-            };
-
-            return View(result);
         }
 
         // Action to handle user group deletion
@@ -240,20 +254,34 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         // Helper method to create and assign a role if it doesn't exist
         private async Task CreateAndAssignRoleIfNotExists(string roleName, AppUser user)
         {
-            if (!await roleManager.RoleExistsAsync(roleName))
+            try
             {
-                var role = new AppRole { Name = roleName };
-                await roleManager.CreateAsync(role);
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    var role = new AppRole { Name = roleName };
+                    await roleManager.CreateAsync(role);
+                }
+                await userManager.AddToRoleAsync(user, roleName);
             }
-            await userManager.AddToRoleAsync(user, roleName);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Helper method to add errors to ModelState
         private void AddErrorsToModelState(IEnumerable<IdentityError> errors)
         {
-            foreach (var error in errors)
+            try
             {
-                ModelState.AddModelError("message", error.Description);
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError("message", error.Description);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 

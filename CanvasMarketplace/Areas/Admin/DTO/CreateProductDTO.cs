@@ -17,6 +17,7 @@ namespace CanvasMarketplace.Areas.Admin.DTO
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Description is required.")]
+        [MaxLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Description { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Price is required.")]

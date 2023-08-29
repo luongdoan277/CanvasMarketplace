@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yHJxMd88oB1ciULwm3Ie+7JtBYWtxyzEymTrqq+Jgjg8ImlD2J8+9RNdIL9HOvo4YSk/cM7LUi6SOt6fKVhjwA==",
+  "dgSpecHash": "J4XVxfkvCtthr5aws5ZVzLUdPhlX5ar12LijPzY3ad9BzdnX/Cq6pZajpHG2ASHX2pWPAtDM+5w703axLDWgjQ==",
   "success": true,
-  "projectFilePath": "D:\\wordspaces\\FreeLancer\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
+  "projectFilePath": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\CanvasMarketplace.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\AD\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\AD\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

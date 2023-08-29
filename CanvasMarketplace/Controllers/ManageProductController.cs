@@ -1,5 +1,6 @@
 ﻿using CanvasMarketplace.Data.EF;
 using CanvasMarketplace.Data.Entities;
+using CanvasMarketplace.Data.Enums;
 using CanvasMarketplace.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,12 +11,12 @@ using System.Security.Cryptography;
 namespace CanvasMarketplace.Controllers
 {
     [Authorize(Policy = "RoleAccess")]
-    public class ManageProductController: Controller
+    public class ManageProductController : Controller
     {
         private readonly UserManager<AppUser> userManager;
         private readonly ApplicationDbContext context;
 
-        public ManageProductController( 
+        public ManageProductController(
             UserManager<AppUser> userManager,
             ApplicationDbContext context)
         {
@@ -24,26 +25,40 @@ namespace CanvasMarketplace.Controllers
             this.context = context;
         }
 
-        public IActionResult Cart()
+        public async Task<IActionResult> Cart()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-       
+
         public async Task<IActionResult> CheckoutOut()
         {
-            var user = await this.userManager.GetUserAsync(User);
-            
-            var userDTO = new UserDTO()
+            try
             {
-                FullName = user.FirstName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-            };
+                var user = await this.userManager.GetUserAsync(User);
 
-            var result = new CheckoutOutDTO() { User = userDTO };
+                var userDTO = new UserDTO()
+                {
+                    FullName = user.FirstName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                };
 
-            return View(result);
+                var result = new CheckoutOutDTO() { User = userDTO };
+
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         [HttpPost]
         public async Task<IActionResult> CheckoutOut(CheckoutOutDTO model)
@@ -52,31 +67,45 @@ namespace CanvasMarketplace.Controllers
             {
                 var user = await userManager.GetUserAsync(User);
 
-                decimal totalAmount = 0;
-                foreach (var item in model.OrderItems)
-                {
-                    totalAmount += item.Total ;
-                }
+                decimal totalAmount = model.OrderItems.Sum(item => item.Total);
 
-                var order = new Order()
+                var newOrder = new Order()
                 {
                     UserId = user.Id,
-                    TotalAmount = totalAmount
+                    TotalAmount = totalAmount,
+                    Status = StatusOrder.Pending, // Set the initial status here
+                    Street = model.User.Street
                 };
 
-                await context.AddAsync(order);
+                var newUser = await context.AppUsers.FindAsync(user.Id);
+
+                if (newUser != null)
+                {
+                    newOrder.AppUser = newUser;
+                }
+
+                var newOrderItems = new List<OrderItem>();
 
                 foreach (var item in model.OrderItems)
                 {
-                    var orderItem = new OrderItem()
+                    var newOrderItem = new OrderItem()
                     {
-                        OrderId = order.Id,
                         ProductId = item.ProId,
                         Quantity = item.Quantity
                     };
 
-                    await context.AddAsync(orderItem);
+                    var product = await context.Products.FindAsync(item.ProId);
+
+                    if (product != null)
+                    {
+                        newOrderItem.Product = product;
+                        newOrderItems.Add(newOrderItem);
+                    }
                 }
+
+                newOrder.OrderItems = newOrderItems;
+
+                context.Orders.Add(newOrder);
 
                 await context.SaveChangesAsync();
 
@@ -91,10 +120,19 @@ namespace CanvasMarketplace.Controllers
                 return Ok(new { success = false, error = ex.Message });
             }
         }
+
         [HttpGet]
-        public IActionResult OrderConfirmation()
+        public async Task<IActionResult> OrderConfirmation()
         {
-            return View();
+           
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

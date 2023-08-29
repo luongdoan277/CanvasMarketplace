@@ -23,9 +23,12 @@ namespace CanvasMarketplace.Controllers
 
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            var products = await _context.Products.Select(p => new ProductDTO()
+            try
+            {
+                IQueryable<ProductDTO> productsQuery = _context.Products
+                .Select(p => new ProductDTO()
                 {
                     Id = p.Id,
                     Description = p.Description,
@@ -37,53 +40,73 @@ namespace CanvasMarketplace.Controllers
                     CatId = p.CategoryId,
                     UerId = p.UserId
                 })
-                .Where(el=>el.Status == true)
-                .ToListAsync();
+                .Where(el => el.Status == true);
 
-            return View(products);
+                if (id.HasValue && id.Value != 0)
+                {
+                    productsQuery = productsQuery.Where(p => p.CatId == id.Value);
+                }
+
+                List<ProductDTO> products = await productsQuery
+                    .Take(10) // Giới hạn số lượng sản phẩm từ 1 đến 10
+                    .ToListAsync();
+                ViewData["ShowCarousel"] = true;
+                return View(products);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         [AllowAnonymous]
         public async Task<IActionResult> ProductDetail(int? id)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var product = await _context.Products.FindAsync(id);
+
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                var productDto = new ProductDTO()
+                {
+                    Id = product.Id,
+                    Description = product.Description,
+                    Name = product.Name,
+                    Price = product.Price,
+                    ImageThumbnailUrl = "/images/" + product.ImageThumbnailUrl,
+                    ImageUrl = "/images/" + product.ImageUrl,
+                    Status = product.Status,
+                    CatId = product.CategoryId,
+                    UerId = product.UserId
+                };
+
+
+                var checkUser = _userManager.GetUserId(User);
+
+                if (checkUser == null)
+                {
+                    ViewBag.Auth = false;
+                }
+                else
+                {
+                    ViewBag.Auth = true;
+
+                }
+
+                return View(productDto);
             }
-
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                throw new Exception(ex.Message);
             }
-
-            var productDto = new ProductDTO()
-            {
-                Id = product.Id,
-                Description = product.Description,
-                Name = product.Name,
-                Price = product.Price,
-                ImageThumbnailUrl = "/images/" + product.ImageThumbnailUrl,
-                ImageUrl = "/images/" + product.ImageUrl,
-                Status = product.Status,
-                CatId = product.CategoryId,
-                UerId = product.UserId
-            };
-
-
-            var checkUser = _userManager.GetUserId(User); 
-
-            if (checkUser == null)
-            {
-                ViewBag.Auth = false;
-            }
-            else
-            {
-                ViewBag.Auth = true;
-               
-            }
-
-            return View(productDto);
         }
 
         

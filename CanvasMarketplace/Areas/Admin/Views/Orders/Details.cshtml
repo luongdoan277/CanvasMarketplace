@@ -1,4 +1,4 @@
-﻿@model CanvasMarketplace.Data.Entities.Order
+﻿@model OrderDetailDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -7,35 +7,64 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Detail category </h6>
+        <h6 class="m-0 font-weight-bold text-primary">Detail Order</h6>
         <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
     <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.TotalAmount)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.TotalAmount)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Status)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Status)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.AppUser)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.AppUser.Id)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CreatedDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CreatedDate)
-            </dd>
-        </dl>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Total Amount:</label>
+                    <p>@Model.TotalAmount</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Status:</label>
+                    <p>@Model.Status</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Customer Name:</label>
+                    <p>@Model.AppUser.FirstName</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Email:</label>
+                    <p>@Model.AppUser.Email</p>
+                </div>
+            </div>
+        </div>
+        <h6 class="m-0 font-weight-bold text-primary">Order Items</h6>
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>ProductImageThumbnailUrl</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.ProductName</td>
+                            <td>@item.Price</td>
+                            <td>@item.ProductCategory.Name</td>
+                            <td>
+                                <img src="@item.ProductImageThumbnailUrl" alt="Product Thumbnail" class="product-thumbnail">
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

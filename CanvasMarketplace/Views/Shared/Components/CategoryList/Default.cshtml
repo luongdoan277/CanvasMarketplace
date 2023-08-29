@@ -1,0 +1,9 @@
+﻿@model List<CategoryDTO>
+
+<div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+    <a asp-action="Index" asp-controller="Shop" asp-route-id="0" class="nav-item nav-link">All</a>
+    @foreach (var category in Model)
+    {
+        <a asp-action="Index" asp-controller="Shop" asp-route-id="@category.Id" class="nav-item nav-link">@category.Name</a>
+    }
+</div>

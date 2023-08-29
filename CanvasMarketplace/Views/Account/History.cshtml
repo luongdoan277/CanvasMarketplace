@@ -2,9 +2,26 @@
 @{
     ViewData["Title"] = "History";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var statusCssClasses = new Dictionary<StatusOrder, string>
+    {
+        { StatusOrder.Pending, "status-pending" },
+        { StatusOrder.Confirmed, "status-confirmed" },
+        { StatusOrder.Shipped, "status-shipped" }
+    };
 }
+<style>
+    .status-pending {
+        color: orange;
+    }
 
-<!-- Page Add Section Begin -->
+    .status-confirmed {
+        color: green;
+    }
+
+    .status-shipped {
+        color: blue;
+    }
+</style>
 <section class="page-add">
     <div class="container">
         <div class="row">
@@ -19,46 +36,46 @@
         </div>
     </div>
 </section>
-<div class="cart-page">
-    <div class="container">
-        @if (Model.Any())
-        {
-            <div class="cart-table">
-                <table>
-                    <thead>
+
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            @if (Model.Any())
+            {
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
                         <tr>
                             <th class="product-h">Product</th>
                             <th>Price</th>
                             <th class="quan">Quantity</th>
                             <th>Total</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="align-middle">
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td class="product-col">
-                                    <img src="img/product/product-1.jpg" alt="">
-                                    <div class="p-title">
-                                        <h5>@item.Product</h5>
-                                    </div>
+                                <td class="align-middle">
+                                    <img src="img/product-1.jpg" alt="" style="width: 50px;"> @item.Product
                                 </td>
-                                <td class="price-col">@item.Price</td>
-                                <td class="quantity-col">
-                                    <div class="pro-qty">
-                                        <input type="text" value="@item.Quantity" disabled>
-                                    </div>
+                                <td class="align-middle">@item.Price</td>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="@item.Quantity" disabled>
                                 </td>
-                                <td class="total">@item.TotalPrice</td>
+                                <td class="align-middle">@item.TotalPrice</td>
+                                <td class="align-middle">
+                                    <span class="@statusCssClasses[item.IsActive]">@item.IsActive</span>
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-            </div>
-        }
-        else
-        {
-            <p>No orders found.</p>
-        }
+            }
+            else
+            {
+                <p>No orders found.</p>
+            }
+        </div>
     </div>
 </div>

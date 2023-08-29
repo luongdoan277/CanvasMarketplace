@@ -58,35 +58,36 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Xử lý sự kiện khi người dùng chọn hình ảnh
+            document.getElementById("imageFileInput").addEventListener("change", function () {
+                const fileInput = this;
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const selectedImage = document.getElementById("selectedImage");
+                        selectedImage.src = e.target.result;
+                        selectedImage.style.display = "block";
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Xử lý sự kiện khi người dùng chọn hình ảnh
-        document.getElementById("imageFileInput").addEventListener("change", function () {
-            const fileInput = this;
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const selectedImage = document.getElementById("selectedImage");
-                    selectedImage.src = e.target.result;
-                    selectedImage.style.display = "block";
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            }
+            document.getElementById("imageThumbnaiFileInput").addEventListener("change", function () {
+                const fileInput = this;
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const selectedImageThumbnai = document.getElementById("selectedImageThumbnai");
+                        selectedImageThumbnai.src = e.target.result;
+                        selectedImageThumbnai.style.display = "block";
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
         });
 
-        document.getElementById("imageThumbnaiFileInput").addEventListener("change", function () {
-            const fileInput = this;
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const selectedImageThumbnai = document.getElementById("selectedImageThumbnai");
-                    selectedImageThumbnai.src = e.target.result;
-                    selectedImageThumbnai.style.display = "block";
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            }
-        });
-    });
-
-</script>
+    </script>
+}

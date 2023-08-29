@@ -8,6 +8,8 @@ namespace CanvasMarketplace.Data.Entities
 
         public decimal TotalAmount { get; set; } // Total amount of the order
 
+        public string Street { get; set; }
+
         public StatusOrder Status { get; set; } // Status of the order
 
         public AppUser AppUser { get; set; } = new AppUser(); // User associated with the order

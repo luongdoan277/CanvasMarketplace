@@ -78,9 +78,16 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
         }
 
         // Action to display the category creation form
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         // Action to handle category creation

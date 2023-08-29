@@ -32,7 +32,7 @@
                 <label asp-for="Description"></label>
             </dt>
             <dd class="col-sm-10">
-                <div asp-for="Description" class="form-control" readonly></div>
+                @Html.Raw(Model.Description)
             </dd>
             <dt class="col-sm-2">
                 <label asp-for="Price"></label>
