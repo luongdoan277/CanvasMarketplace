@@ -1,0 +1,50 @@
+﻿@model UpdatePostProductDTO
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Do you want this product to appear on the website size?</h6>
+        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                @if (Model.Status)
+                {
+                    <div class="alert alert-success">
+                        The product is currently displayed in the store.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">
+                        The product is not displayed in the store.
+                    </div>
+                }
+                <form asp-action="Post">
+                    <div class="form-group">
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                <label asp-for="Status" class="control-label"></label>
+                            </dt>
+                            <dd class="col-sm-10">
+                                <input asp-for="Status" class="form-check-input" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

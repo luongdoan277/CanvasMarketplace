@@ -1,5 +1,4 @@
-﻿@model UpdatePostProductDTO
-
+﻿@model UpdateProductDTO
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -7,44 +6,134 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary">Do you want this product to appear on the website size?</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Create Product</h6>
         <a asp-action="Index" class="btn btn-primary">Back to List</a>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-md-4">
-                @if (Model.Status)
-                {
-                    <div class="alert alert-success">
-                        The product is currently displayed in the store.
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
-                }
-                else
-                {
-                    <div class="alert alert-warning">
-                        The product is not displayed in the store.
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-                }
-                <form asp-action="Edit">
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control ckeditor"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
                     <div class="form-group">
                         <dl class="row">
                             <dt class="col-sm-2">
-                                <label asp-for="Status" class="control-label"></label>
+                                <label asp-for="IsUpdateImage" class="control-label"></label>
                             </dt>
                             <dd class="col-sm-10">
-                                <input asp-for="Status" class="form-check-input" />
-                                <span asp-validation-for="Status" class="text-danger"></span>
+                                <input asp-for="IsUpdateImage" class="form-check-input" id="IsUpdateImageCheckbox" />
+                                <span asp-validation-for="IsUpdateImage" class="text-danger"></span>
                             </dd>
                         </dl>
                     </div>
-                    <input type="hidden" asp-for="Id" />
-
+                    <div class="form-group" id="ImageDataField" style="display:none">
+                        <label asp-for="ImageData" class="control-label"></label>
+                        <input asp-for="ImageData" class="form-control" type="file" id="imageFileInput" />
+                        <span asp-validation-for="ImageData" class="text-danger"></span>
+                    </div>
+                   
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <img id="selectedImage" src="@Model.ImageUrl" alt="Selected Image" style="max-width: 100%; max-height: 200px; display: block;" />
+                    </div>
+                    <div class="form-group">
+                        <dl class="row">
+                            <dt class="col-sm-2">
+                                <label asp-for="IsUpdateImageThumbnail" class="control-label"></label>
+                            </dt>
+                            <dd class="col-sm-10">
+                                <input asp-for="IsUpdateImageThumbnail" class="form-check-input" id="IsUpdateImageThumbnailCheckbox" />
+                                <span asp-validation-for="IsUpdateImageThumbnail" class="text-danger"></span>
+                            </dd>
+                        </dl>
+                     </div>
+                    <div class="form-group" id="ImageThumbnailDataField" style="display:none">
+                        <label asp-for="ImageThumbnailData" class="control-label"></label>
+                        <input asp-for="ImageThumbnailData" class="form-control" type="file" id="imageThumbnaiFileInput" />
+                        <span asp-validation-for="ImageThumbnailData" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="form-group">
+                        <img id="selectedImageThumbnai" src="@Model.ImageThumbnailUrl" alt="Selected Image" style="max-width: 100%; max-height: 200px; display: block;" />
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="ImageUrl" class="form-control" hidden />
+                        <input asp-for="UserId" class="form-control" hidden />
+                        <input asp-for="ImageThumbnailUrl" class="form-control" hidden />
+                        <input asp-for="Id" class="form-control" hidden />
+                        <input asp-for="IsUpdateImage"  class="form-control" id="IsUpdateImage"  value="false" style="display: none" />
+                        <input asp-for="IsUpdateImageThumbnail" class="form-control" id="IsUpdateImageThumbnail" value="false" style="display: none" />
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Edit" class="btn btn-primary" />
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isUpdateImageCheckbox = document.getElementById("IsUpdateImageCheckbox");
+            const imageDataField = document.getElementById("ImageDataField");
+            const isUpdateImageThumbnailCheckbox = document.getElementById("IsUpdateImageThumbnailCheckbox");
+            const imageThumbnailDataField = document.getElementById("ImageThumbnailDataField");
+
+            isUpdateImageCheckbox.addEventListener("change", function () {
+                imageDataField.style.display = this.checked ? "block" : "none";
+            });
+
+            isUpdateImageThumbnailCheckbox.addEventListener("change", function () {
+                imageThumbnailDataField.style.display = this.checked ? "block" : "none";
+            });
+            // Xử lý sự kiện khi người dùng chọn hình ảnh
+            document.getElementById("imageFileInput").addEventListener("change", function () {
+                const fileInput = this;
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const selectedImage = document.getElementById("selectedImage");
+                        selectedImage.src = e.target.result;
+                    };
+                    // Thay đổi giá trị của IsUpdateImage thành true
+                    document.getElementById("IsUpdateImage").value = "true";
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+
+            document.getElementById("imageThumbnaiFileInput").addEventListener("change", function () {
+                const fileInput = this;
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const selectedImageThumbnai = document.getElementById("selectedImageThumbnai");
+                        selectedImageThumbnai.src = e.target.result;
+                    };
+                    // Thay đổi giá trị của IsUpdateImageThumbnail thành true
+                    document.getElementById("IsUpdateImageThumbnail").value = "true";
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+        });
+
+    </script>
+}

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EhukMtCWZT4SxOcA4bC0uOnUDTZ4GMdAmvUPoHAXNZg=",
+  "Hash": "NWklKevx7SRinnaFPaxKSvT0nli3gyMOOq7y/WJ3j2s=",
   "Source": "CanvasMarketplace",
   "BasePath": "_content/CanvasMarketplace",
   "Mode": "Default",
@@ -33592,12 +33592,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\images\\4fec8fdd-cbc3-454e-8dd0-743f89177792_FjQbvZDVQAE0otv.jpg",
+      "Identity": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\images\\14ad5171-f6d8-413d-bfa4-04ebdc948b0a_OIP.jpg",
       "SourceId": "CanvasMarketplace",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\",
       "BasePath": "_content/CanvasMarketplace",
-      "RelativePath": "images/4fec8fdd-cbc3-454e-8dd0-743f89177792_FjQbvZDVQAE0otv.jpg",
+      "RelativePath": "images/14ad5171-f6d8-413d-bfa4-04ebdc948b0a_OIP.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -33606,15 +33606,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\4fec8fdd-cbc3-454e-8dd0-743f89177792_FjQbvZDVQAE0otv.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\14ad5171-f6d8-413d-bfa4-04ebdc948b0a_OIP.jpg"
     },
     {
-      "Identity": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\images\\b31a9ec6-cb22-46cb-8938-24b6b60e65b7_OIP (2).jpg",
+      "Identity": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\images\\7b862907-992d-4ba2-bc69-740794eb683b_OIP (2).jpg",
       "SourceId": "CanvasMarketplace",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\",
       "BasePath": "_content/CanvasMarketplace",
-      "RelativePath": "images/b31a9ec6-cb22-46cb-8938-24b6b60e65b7_OIP (2).jpg",
+      "RelativePath": "images/7b862907-992d-4ba2-bc69-740794eb683b_OIP (2).jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -33623,7 +33623,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\b31a9ec6-cb22-46cb-8938-24b6b60e65b7_OIP (2).jpg"
+      "OriginalItemSpec": "wwwroot\\images\\7b862907-992d-4ba2-bc69-740794eb683b_OIP (2).jpg"
     },
     {
       "Identity": "D:\\wordspaces\\FreeLancer\\Source\\CanvasMarketplace\\CanvasMarketplace\\wwwroot\\js\\site.js",

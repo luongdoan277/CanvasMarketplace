@@ -51,6 +51,17 @@ namespace CanvasMarketplace.Controllers
                     .Take(10) // Giới hạn số lượng sản phẩm từ 1 đến 10
                     .ToListAsync();
                 ViewData["ShowCarousel"] = true;
+                var checkUser = _userManager.GetUserId(User);
+
+                if (checkUser == null)
+                {
+                    ViewBag.Auth = false;
+                }
+                else
+                {
+                    ViewBag.Auth = true;
+
+                }
                 return View(products);
             }
             catch (Exception ex)

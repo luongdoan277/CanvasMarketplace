@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-
 namespace CanvasMarketplace.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -142,8 +141,8 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
             }
         }
 
-        // GET: Admin/Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: Admin/Products/Post/5
+        public async Task<IActionResult> Post(int? id)
         {
             try
             {
@@ -173,10 +172,10 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
             }
         }
 
-        // POST: Admin/Products/Edit/5
+        // POST: Admin/Products/Post/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, UpdatePostProductDTO product)
+        public async Task<IActionResult> Post(int id, UpdatePostProductDTO product)
         {
             try
             {
@@ -221,7 +220,121 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        
+        public async Task<IActionResult> Edit(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
+                var product = await _context.Products.FindAsync(id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+                var productDTO = new UpdateProductDTO()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Description = product.Description,
+                    ImageThumbnailUrl = "/images/" + product.ImageThumbnailUrl,
+                    ImageUrl = "/images/" + product.ImageUrl,
+                    CategoryId = product.CategoryId,
+                    UserId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                    IsUpdateImage= false,
+                    IsUpdateImageThumbnail = false
+
+                };
+
+                return View(productDTO);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, UpdateProductDTO product)
+        {
+            try
+            {
+                if (id != product.Id)
+                {
+                    return NotFound();
+                }
+                // Xóa lỗi validation cho các trường không cần kiểm tra
+                ModelState.Remove("ImageData");
+                ModelState.Remove("ImageThumbnailData");
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        string urlUpdateImage = product.ImageUrl?.Replace("/images/", "");
+                        string urlUpdateImageThumbnail = product.ImageThumbnailUrl?.Replace("/images/", "");
+
+
+                        if (product.IsUpdateImage)
+                        {
+                            DeleteImageFile(urlUpdateImage);
+                            urlUpdateImage = UploadedFile(product.ImageData);
+                        }
+                        if (product.IsUpdateImageThumbnail)
+                        {
+                            DeleteImageFile(urlUpdateImageThumbnail);
+                            urlUpdateImageThumbnail = UploadedFile(product.ImageThumbnailData);
+                        }
+
+                        var category = await _context.Categories.FindAsync(product.CategoryId);
+                        var existingProduct = await _context.Products.FindAsync(id);
+
+                        if (existingProduct == null)
+                        {
+                            return NotFound();
+                        }
+                        if (category != null)
+                        {
+                            existingProduct.Category = category;
+                        }
+
+                        existingProduct.CategoryId = product.CategoryId;
+                        existingProduct.ImageUrl = urlUpdateImage;
+                        existingProduct.ImageThumbnailUrl = urlUpdateImageThumbnail;
+                        existingProduct.Name = product.Name;
+                        existingProduct.Price = product.Price;
+                        existingProduct.Description = product.Description;
+
+                        _context.Update(existingProduct);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!ProductExists(id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -268,6 +381,8 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
             try
             {
                 var product = await _context.Products.FindAsync(id);
+                DeleteImageFile(product.ImageThumbnailUrl);
+                DeleteImageFile(product.ImageUrl);
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -317,5 +432,26 @@ namespace CanvasMarketplace.Areas.Admin.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        private void DeleteImageFile(string fileName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", fileName);
+
+                    if (System.IO.File.Exists(imagePath))
+                    {
+                        System.IO.File.Delete(imagePath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

@@ -25,8 +25,14 @@
                         </a>
                         <h5 class="font-weight-semi-bold m-0">@item.Name</h5>
                         <p class="mb-0 price">$@item.Price</p>
+                        <button class="btn btn-primary add-to-cart-btn" 
+                        data-product-id="@item.Id" 
+                        data-product-name="@item.Name" 
+                        data-product-price="@item.Price" 
+                        data-product-image="@item.ImageUrl">Add to Cart</button>
                     </div>
                 </div>
+
             }
         }
     </div>
@@ -34,38 +40,101 @@
 <!-- Categories Page Section End -->
 
 <script>
-    function formatCurrency(number) {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
-    }
-
-    // Function to resize images based on screen width and center them vertically
-    function resizeImages() {
-        const images = document.querySelectorAll(".resize-image");
-        images.forEach(image => {
-            const screenWidth = window.innerWidth;
-            const desiredWidth = screenWidth >= 992 ? 250 : (screenWidth / 992) * 250;
-            const desiredHeight = (desiredWidth / 250) * 350;
-
-            image.style.width = desiredWidth + "px";
-            image.style.height = desiredHeight + "px";
-
-            // Calculate margin to vertically center the image
-            const margin = (desiredHeight - image.clientHeight) / 2;
-            image.style.marginTop = margin + "px";
-            image.style.marginBottom = margin + "px";
-        });
-    }
-
-    // Call the function when the page loads and when the window is resized
-    window.addEventListener("load", resizeImages);
-    window.addEventListener("resize", resizeImages);
-
-    // Format prices using the formatCurrency function
-    const priceElements = document.querySelectorAll(".price");
-    priceElements.forEach(element => {
-        const price = parseFloat(element.textContent.replace("$", ""));
-        element.textContent = formatCurrency(price);
-    });
+    
         
+    document.addEventListener("DOMContentLoaded", function () {
+        updateCartItemCount();
 
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+        }
+
+        // Function to resize images based on screen width and center them vertically
+        function resizeImages() {
+            const images = document.querySelectorAll(".resize-image");
+            images.forEach(image => {
+                const screenWidth = window.innerWidth;
+                const desiredWidth = screenWidth >= 992 ? 250 : (screenWidth / 992) * 250;
+                const desiredHeight = (desiredWidth / 250) * 350;
+
+                image.style.width = desiredWidth + "px";
+                image.style.height = desiredHeight + "px";
+
+                // Calculate margin to vertically center the image
+                const margin = (desiredHeight - image.clientHeight) / 2;
+                image.style.marginTop = margin + "px";
+                image.style.marginBottom = margin + "px";
+            });
+        }
+        function showToast() {
+            let toast = new bootstrap.Toast(document.getElementById("toast"), {
+                autohide: true,
+                delay: 3000
+            });
+            toast.show();
+        }
+        function getCartItems() {
+            debugger
+            return JSON.parse(localStorage.getItem("cartItems")) || [];
+        }
+
+        function updateCartItemCount() {
+            let cartItems = getCartItems();
+            let totalCount = cartItems.length;
+            document.getElementById("cart-item-count").textContent = totalCount;
+        }
+
+        // Call the function when the page loads and when the window is resized
+        window.addEventListener("load", resizeImages);
+        window.addEventListener("resize", resizeImages);
+
+        // Format prices using the formatCurrency function
+        const priceElements = document.querySelectorAll(".price");
+        priceElements.forEach(element => {
+            const price = parseFloat(element.textContent.replace("$", ""));
+            element.textContent = formatCurrency(price);
+        });
+
+        // Xử lý sự kiện khi nút "Add to Cart" được nhấn
+        const addToCartButtons = document.querySelectorAll(".add-to-cart-btn");
+        addToCartButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                let checkAuth = "@ViewBag.Auth";
+                if (checkAuth == "True") {
+                const productId = this.getAttribute("data-product-id");
+                const productName = this.getAttribute("data-product-name");
+                const productPrice = parseFloat(this.getAttribute("data-product-price"));
+                const productImage = this.getAttribute("data-product-image");
+
+                // Lấy dữ liệu từ localStorage
+                let cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+                // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
+                let existingItem = cartItems.find(item => item.Id === productId);
+                if (existingItem) {
+                    existingItem.Quantity++;
+                } else {
+                    cartItems.push({
+                        Id: productId,
+                        Name: productName,
+                        Price: productPrice,
+                        Quantity: 1,
+                        ImageUrl: productImage
+                    });
+                }
+
+                // Lưu dữ liệu vào localStorage
+                localStorage.setItem("cartItems", JSON.stringify(cartItems));
+                showToast();
+                updateCartItemCount();
+                }
+                else {
+                    alert("You are not logged in. Please log in to remove items from the cart.");
+                    // Redirect to the login page
+                    window.location.href = "/Account/Login"; // Change this URL to your login page
+                }
+            });
+        });
+
+    });
 </script>

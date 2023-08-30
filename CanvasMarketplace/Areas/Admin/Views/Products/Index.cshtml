@@ -61,6 +61,7 @@
                                 <img src="@item.ImageThumbnailUrl" alt="Thumbnail" style="width: 150px;" />
                             </td>
                             <td>
+                                <a asp-action="Post" asp-route-id="@item.Id" class="btn btn-warning">Post</a> |
                                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
                                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a> |
                                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>

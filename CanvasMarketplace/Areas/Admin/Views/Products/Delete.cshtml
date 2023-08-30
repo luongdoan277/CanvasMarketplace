@@ -22,41 +22,43 @@
     </div>
     <div class="card-body">
         <dl class="row">
-            <dt class="col-sm-2">
-                <label asp-for="Name"></label>
-            </dt>
-            <dd class="col-sm-10">
-                <label asp-for="Name"></label>
-            </dd>
-            <dt class="col-sm-2">
-                <label asp-for="Description"></label>
-            </dt>
-            <dd class="col-sm-10">
-                @Html.Raw(Model.Description)
-            </dd>
-            <dt class="col-sm-2">
-                <label asp-for="Price"></label>
-            </dt>
-            <dd class="col-sm-10">
-                <label asp-for="Price"></label>
-            </dd>
-            <dt class="col-sm-2">
-                <label asp-for="ImageThumbnailUrl"></label>
-            </dt>
-            <dd class="col-sm-10">
-                <img src="@Model.ImageThumbnailUrl" alt="Thumbnail" class="thumbnail-image" />
-            </dd>
-            <dt class="col-sm-2">
-                <label asp-for="ImageUrl"></label>
-            </dt>
-            <dd class="col-sm-10">
-                <img src="@Model.ImageUrl" alt="Image" class="main-image" />
-            </dd>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    <label asp-for="Name"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(Model => Model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    <label asp-for="Description"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.Raw(Model.Description)
+                </dd>
+                <dt class="col-sm-2">
+                    <label asp-for="Price"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    $@Html.DisplayFor(Model => Model.Price)
+                </dd>
+                <dt class="col-sm-2">
+                    <label asp-for="ImageThumbnailUrl"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    <img src="@Model.ImageThumbnailUrl" alt="Thumbnail" class="thumbnail-image" />
+                </dd>
+                <dt class="col-sm-2">
+                    <label asp-for="ImageUrl"></label>
+                </dt>
+                <dd class="col-sm-10">
+                    <img src="@Model.ImageUrl" alt="Image" class="main-image" />
+                </dd>
+            </dl>
         </dl>
 
         <form asp-action="Delete">
             <input type="hidden" asp-for="Id" />
-            <button type="submit" class="btn btn-danger">Delete</button> |
+            <button type="submit" class="btn btn-danger">Delete</button> 
         </form>
     </div>
 </div>
